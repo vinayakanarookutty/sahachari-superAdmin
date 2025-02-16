@@ -16,9 +16,11 @@
     "@mui/material": "^6.4.4",
     "@mui/system": "^6.4.3",
     "@mui/x-charts": "^7.26.0",
+    "@mui/x-data-grid": "^7.26.0",
     "@mui/x-data-grid-pro": "^7.26.0",
     "@mui/x-date-pickers": "^7.26.0",
     "@mui/x-tree-view": "^7.26.0",
+    "axios": "^1.7.9",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-router-dom": "^7.1.5"

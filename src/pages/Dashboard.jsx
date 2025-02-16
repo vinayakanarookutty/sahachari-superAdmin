@@ -1,8 +1,15 @@
 import React from "react";
-import { Typography } from "@mui/material";
+import { Typography, Box } from "@mui/material";
 
 function Dashboard() {
-  return <Typography variant="h4">Welcome to the Dashboard</Typography>;
+  return (
+    <Box>
+      <Typography variant="h4" gutterBottom>
+        Dashboard
+      </Typography>
+      <Typography variant="body1">Welcome to the SuperAdmin Dashboard.</Typography>
+    </Box>
+  );
 }
 
 export default Dashboard;

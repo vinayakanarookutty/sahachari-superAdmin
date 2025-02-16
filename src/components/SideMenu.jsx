@@ -2,25 +2,27 @@ import React from "react";
 import { Drawer, List, ListItem, ListItemButton, ListItemText } from "@mui/material";
 import { Link } from "react-router-dom";
 
-const drawerWidth = 180; // Reduced sidebar width
-
-function SideMenu() {
+function SideMenu({ open, toggleDrawer }) {
   return (
     <Drawer
-      variant="permanent"
+      variant="persistent"
+      open={open}
       sx={{
-        width: drawerWidth,
+        width: open ? 180 : 0,
         flexShrink: 0,
+        transition: "width 0.3s ease",
         "& .MuiDrawer-paper": {
-          width: drawerWidth,
-          boxSizing: "border-box",
-          position: "fixed",
-          height: "100vh",
-          top: 64, // Ensures it doesn't overlap the navbar
+          width: open ? 180 : 0,
+          overflowX: "hidden",
         },
       }}
     >
       <List>
+        <ListItem disablePadding>
+          <ListItemButton onClick={toggleDrawer}>
+            <ListItemText primary="Close Menu" />
+          </ListItemButton>
+        </ListItem>
         <ListItem disablePadding>
           <ListItemButton component={Link} to="/">
             <ListItemText primary="Dashboard" />
