@@ -3,12 +3,11 @@ import { Typography, AppBar, Toolbar, Button, Box, CssBaseline, IconButton } fro
 import MenuIcon from "@mui/icons-material/Menu";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import SideMenu from "./components/SideMenu"; 
-
 import Dashboard from "./pages/Dashboard";
 import Orders from "./pages/Orders";
 import Users from "./pages/Users";
+import Admins from "./pages/Admins";
 import Products from "./pages/Products";
-import StoreOwners from "./pages/StoreOwners";
 import Delivery from "./pages/Delivery";
 import Advertisements from "./pages/Advertisements";
 
@@ -32,7 +31,7 @@ function App() {
           <Typography variant="h6" sx={{ flexGrow: 1 }}>
             Sahachari SuperAdmin
           </Typography>
-          <Button color="inherit">Login</Button>
+          
         </Toolbar>
       </AppBar>
 
@@ -52,8 +51,8 @@ function App() {
             <Route path="/" element={<Dashboard />} />
             <Route path="/orders" element={<Orders />} />
             <Route path="/users" element={<Users />} />
+            <Route path="/admin" element={<Admins />} />
             <Route path="/products" element={<Products />} />
-            <Route path="/store-owners" element={<StoreOwners />} />
             <Route path="/delivery" element={<Delivery />} />
             <Route path="/advertisements" element={<Advertisements />} />
           </Routes>

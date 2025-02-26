@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { DataGrid } from "@mui/x-data-grid";
 import { Box, Typography } from "@mui/material";
-import axios from "axios"; // Ensure axios is installed
+import axios from "axios"; 
+
 
 const columns = [
   { field: "id", headerName: "ID", width: 90 },
@@ -15,10 +16,33 @@ function Orders() {
   const [orders, setOrders] = useState([]);
 
   useEffect(() => {
-    axios.get("http://localhost:5000/orders") // Adjust API endpoint
-      .then((response) => setOrders(response.data))
+    axios.get("http://127.0.0.1:5000/api/get-order-details-super") 
+      .then((response) => {
+        const formattedOrders = response.data.map((order) => {
+          return {
+            id: order._id,  
+            customer: order.userId, 
+            status: getOrderStatus(order.status), 
+            total: order.totalPrice,
+            date: new Date(order.orderedAt).toLocaleString(), 
+          };
+        });
+        setOrders(formattedOrders);
+      })
       .catch((error) => console.error("Error fetching orders:", error));
   }, []);
+
+
+  const getOrderStatus = (statusCode) => {
+    switch (statusCode) {
+      case 0:
+        return "Pending";
+      case 1:
+        return "Completed";
+      default:
+        return "Unknown";
+    }
+  };
 
   return (
     <Box sx={{ height: 400, width: "100%", p: 3 }}>

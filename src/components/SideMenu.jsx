@@ -1,18 +1,25 @@
 import React from "react";
 import { Drawer, List, ListItem, ListItemButton, ListItemText } from "@mui/material";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 function SideMenu({ open, toggleDrawer }) {
+  const navigate = useNavigate();
+
+  const handleMenuClick = (path) => {
+    toggleDrawer();
+    navigate(path);
+  };
+
   return (
     <Drawer
       variant="persistent"
       open={open}
       sx={{
-        width: open ? 180 : 0,
+        width: open ? 0 : 0,
         flexShrink: 0,
         transition: "width 0.3s ease",
         "& .MuiDrawer-paper": {
-          width: open ? 180 : 0,
+          width: open ? 150 : 0,
           overflowX: "hidden",
         },
       }}
@@ -24,37 +31,37 @@ function SideMenu({ open, toggleDrawer }) {
           </ListItemButton>
         </ListItem>
         <ListItem disablePadding>
-          <ListItemButton component={Link} to="/">
+          <ListItemButton onClick={() => handleMenuClick("/")}>
             <ListItemText primary="Dashboard" />
           </ListItemButton>
         </ListItem>
         <ListItem disablePadding>
-          <ListItemButton component={Link} to="/orders">
+          <ListItemButton onClick={() => handleMenuClick("/orders")}>
             <ListItemText primary="Orders" />
           </ListItemButton>
         </ListItem>
         <ListItem disablePadding>
-          <ListItemButton component={Link} to="/users">
+          <ListItemButton onClick={() => handleMenuClick("/users")}>
             <ListItemText primary="Users" />
           </ListItemButton>
         </ListItem>
         <ListItem disablePadding>
-          <ListItemButton component={Link} to="/products">
+          <ListItemButton onClick={() => handleMenuClick("/admin")}>
+            <ListItemText primary="Admins" />
+          </ListItemButton>
+        </ListItem>
+        <ListItem disablePadding>
+          <ListItemButton onClick={() => handleMenuClick("/products")}>
             <ListItemText primary="Products" />
           </ListItemButton>
         </ListItem>
         <ListItem disablePadding>
-          <ListItemButton component={Link} to="/store-owners">
-            <ListItemText primary="Store Owners" />
-          </ListItemButton>
-        </ListItem>
-        <ListItem disablePadding>
-          <ListItemButton component={Link} to="/delivery">
+          <ListItemButton onClick={() => handleMenuClick("/delivery")}>
             <ListItemText primary="Delivery" />
           </ListItemButton>
         </ListItem>
         <ListItem disablePadding>
-          <ListItemButton component={Link} to="/advertisements">
+          <ListItemButton onClick={() => handleMenuClick("/advertisements")}>
             <ListItemText primary="Advertisements" />
           </ListItemButton>
         </ListItem>

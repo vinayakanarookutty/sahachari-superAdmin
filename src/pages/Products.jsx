@@ -3,11 +3,16 @@ import { DataGrid } from "@mui/x-data-grid";
 import { Box, Typography } from "@mui/material";
 import axios from "axios";
 
+
 const columns = [
-  { field: "id", headerName: "ID", width: 90 },
-  { field: "name", headerName: "Product Name", width: 200 },
-  { field: "price", headerName: "Price", width: 130 },
-  { field: "category", headerName: "Category", width: 180 },
+  { field: "id", headerName: "Count", width: 80 },
+  { field: "img", headerName:"Image", width:100, renderCell: (params) => (<img src={params.value} alt="Image" style={{width: "50px", height: "50px"}} />)},
+  { field: "name", headerName: "Product Name", width: 150 },
+  { field: "description", headerName: "Description", width: 150 },
+  { field: "price", headerName: "Price", width: 90 },
+  { field: "quantity", headerName: "Quantity", width: 90 },
+  { field: "category", headerName: "Category", width: 100 },
+  { field: "ratings", headerName: "Ratings", width: 90 },
 ];
 
 function Products() {
@@ -15,9 +20,21 @@ function Products() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    axios.get("https://api.example.com/products") // Replace with actual API
+    axios.get("http://127.0.0.1:5000/api/get-products-details-super") 
       .then((response) => {
-        setProducts(response.data);
+        const formattedProducts = response.data.map((product, index) => {
+          return {
+            id: index+1,  
+            img: product.images || product.name ,
+            name: product.name,
+            description: product.description,
+            price: product.price,
+            quantity: product.quantity,
+            category: product.category,
+            ratings: product.ratings,
+          };
+        });
+        setProducts(formattedProducts);
         setLoading(false);
       })
       .catch((error) => console.error("Error fetching products:", error));
