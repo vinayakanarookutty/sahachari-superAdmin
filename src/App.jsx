@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Typography, AppBar, Toolbar, Button, Box, CssBaseline, IconButton } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route ,Link} from "react-router-dom";
 import SideMenu from "./components/SideMenu"; 
 import Dashboard from "./pages/Dashboard";
 import Orders from "./pages/Orders";
@@ -14,7 +14,7 @@ import Advertisements from "./pages/Advertisements";
 const drawerWidth = 180; 
 
 function App() {
-  const [open, setOpen] = useState(true); // Sidebar state
+  const [open, setOpen] = useState(false); // Sidebar state
 
   const toggleDrawer = () => {
     setOpen(!open);
@@ -29,7 +29,9 @@ function App() {
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" sx={{ flexGrow: 1 }}>
-            Sahachari SuperAdmin
+            <Link to="/" style={{ textDecoration: 'none', color: 'inherit' }}>
+              Sahachari SuperAdmin
+            </Link>
           </Typography>
           
         </Toolbar>

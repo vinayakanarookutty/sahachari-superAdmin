@@ -27,7 +27,7 @@ function Users() {
             name: user.name,
             email: user.email,
             address: user.address || "NIL",
-            phno: user.phno || "NIL",
+            phno: user.phoneNo || "NIL",
             pincode: user.pincode
           };
         });
