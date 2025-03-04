@@ -6,6 +6,9 @@ import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import InventoryIcon from "@mui/icons-material/Inventory";
 import LocalShippingIcon from "@mui/icons-material/LocalShipping";
 import CampaignIcon from "@mui/icons-material/Campaign";
+import VisibilityIcon from '@mui/icons-material/Visibility';
+import AddBoxIcon from '@mui/icons-material/AddBox';
+
 import { Link } from "react-router-dom"; // Import the Link component
 
 const sections = [
@@ -14,8 +17,11 @@ const sections = [
   { title: "Orders", icon: <ShoppingCartIcon fontSize="large" />, path: "/orders" },
   { title: "Products", icon: <InventoryIcon fontSize="large" />, path: "/products" },
   { title: "Delivery", icon: <LocalShippingIcon fontSize="large" />, path: "/delivery" },
-  { title: "Advertisement", icon: <CampaignIcon fontSize="large" />, path: "/advertisements" }
+  { title: "Advertisement", icon: <CampaignIcon fontSize="large" />, path: "/advertisements" },
+  { title: "View Services", icon: <VisibilityIcon fontSize="large" />, path: "/view_service" },
+  { title: "Add Services", icon: <AddBoxIcon fontSize="large" />, path: "/add_service" }
 ];
+
 
 function Dashboard() {
   return (

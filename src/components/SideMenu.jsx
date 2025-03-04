@@ -65,6 +65,16 @@ function SideMenu({ open, toggleDrawer }) {
             <ListItemText primary="Advertisements" />
           </ListItemButton>
         </ListItem>
+        <ListItem disablePadding>
+          <ListItemButton onClick={() => handleMenuClick("/view_service")}>
+            <ListItemText primary="View Services" />
+          </ListItemButton>
+        </ListItem>
+        <ListItem disablePadding>
+          <ListItemButton onClick={() => handleMenuClick("/add_service")}>
+            <ListItemText primary="Add Service" />
+          </ListItemButton>
+        </ListItem>
       </List>
     </Drawer>
   );
