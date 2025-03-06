@@ -1,110 +1,158 @@
 import React, { useEffect, useState } from "react";
 import { DataGrid } from "@mui/x-data-grid";
-import { Box, Typography } from "@mui/material";
 import axios from "axios";
+import { Modal, Box, Button, Typography } from "@mui/material";
 
-const columns = [
-  { field: "id", headerName: "ID", width: 50 },
-  {
-    field: "item",
-    headerName: "Item",
-    width: 100,
-    renderCell: (params) => (
-      <img
-        src={params.value}
-        alt="item"
-        style={{ width: "50px", height: "50px" }}
-      />
-    ),
-  },
-  { field: "category", headerName: "Category", width: 90 },
-  { field: "customer", headerName: "Customer", width: 200 },
-  { field: "seller", headerName: "Seller", width: 200 },
-  { field: "quantity", headerName: "Quantity", width: 90 },
-  { field: "address", headerName: "Address", width: 200 },
-  { field: "status", headerName: "Status", width: 90 },
-  { field: "total", headerName: "Total Amount", width: 100 },
-  { field: "date", headerName: "Date", width: 180 },
-];
-
-function Orders() {
+const OrdersTable = () => {
   const [orders, setOrders] = useState([]);
-  const [admins, setAdmins] = useState([]);
-  const [users, setUsers] = useState([]);
-  const [isAdminsLoaded, setIsAdminsLoaded] = useState(false);
-
+  const [open, setOpen] = useState(false);
+  const [selectedProducts, setSelectedProducts] = useState([]);
+  const [users, setUsers] = useState({});
+  const [admins, setAdmins] = useState({});
   useEffect(() => {
-    // Fetch admin details
-    axios.get("http://127.0.0.1:5000/api/get-admin-details-super")
+    axios
+      .get("https://d17p315up9p1ok.cloudfront.net/api/get-admin-details-super")
       .then((response) => {
-        setAdmins(response.data);
-        setIsAdminsLoaded(true);  
+        // Convert admin list to a map { adminId: adminName }
+        const adminMap = response.data.reduce((acc, admin) => {
+          acc[admin._id] = admin.name; // Assuming _id is the adminId
+          return acc;
+        }, {});
+        setAdmins(adminMap);
       })
-      .catch((error) => console.error("Error fetching admin details:", error));
-
-      // Fetch user details
-  axios.get("http://127.0.0.1:5000/api/get-user-details-super")
+      .catch((error) => console.error("Error fetching admins:", error));
+    axios
+    .get("https://d17p315up9p1ok.cloudfront.net/api/get-user-details-super")
     .then((response) => {
-      setUsers(response.data)
-  })
-  .catch((error) => console.error("Error in fetching users: ",error)) 
-
+      // Convert users array into a map { userId: userName }
+      const userMap = response.data.reduce((acc, user) => {
+        acc[user._id] = user.name; // Assuming _id is the userId
+        return acc;
+      }, {});
+      setUsers(userMap);
+    })
+    .catch((error) => console.error("Error fetching users:", error));
+    axios
+      .get("https://d17p315up9p1ok.cloudfront.net/api/get-order-details-super")
+      .then((response) => {
+        setOrders(response.data);
+      })
+      .catch((error) => console.error("Error fetching orders:", error));
   }, []);
 
-   
-
-  useEffect(() => {
-    // Fetch orders only if admins are loaded
-    if (isAdminsLoaded) {
-      axios.get("http://127.0.0.1:5000/api/get-order-details-super")
-        .then((response) => {
-          const formattedOrders = response.data.map((order, index) => {
-            const product = order.products[0].product;
-            const admin = admins.find(admin => admin._id === product.adminId);
-            const user = users.find(user => user._id === order.userId)
-            
-            return {
-              id: index + 1,
-              item: product.images[0], // Using the first image of the product
-              category: product.category,
-              customer: user ? user.name : "unknown",
-              seller: admin ? admin.name : "unknown",
-              quantity: order.products[0].quantity, 
-              address: order.address,
-              status: getOrderStatus(order.status),
-              total: order.totalPrice,
-              date: new Date(order.orderedAt).toLocaleString(),
-            };
-          });
-          setOrders(formattedOrders);
-        })
-        .catch((error) => console.error("Error fetching orders:", error));
-    }
-  }, [isAdminsLoaded, admins]);
-
-  const getOrderStatus = (statusCode) => {
-    switch (statusCode) {
-      case 0:
-        return "Pending";
-      case 1:
-        return "Out for delivery";
-      case 2:
-        return "Delivered";
-      case 3:
-        return "Cancelled";
-      default:
-        return "Unknown";
-    }
+  const handleOpenModal = (products) => {
+    setSelectedProducts(products);
+    setOpen(true);
   };
 
-  return (
-    <Box sx={{ height: 400, width: "100%", p: 3 }}>
-      <Typography variant="h5" gutterBottom>
-        Orders
-      </Typography>
-      <DataGrid rows={orders} columns={columns} pageSize={5} />
-    </Box>
-  );
-}
+  const handleCloseModal = () => {
+    setOpen(false);
+    setSelectedProducts([]);
+  };
 
-export default Orders;
+  // Define columns
+  const columns = [
+    {
+      field: "userId",
+      headerName: "User Name",
+      width: 180,
+      valueGetter: (params) => users[params] || "Unknown", // Get user name by userId
+    },
+    { field: "totalPrice", headerName: "Total Price", width: 120 },
+    { field: "address", headerName: "Address", width: 300 },
+    {
+      field: "status",
+      headerName: "Status",
+      width: 120,
+      valueGetter: (params) => {
+        console.log(params)
+        const statusMap = { 0: "Pending", 1: "Out of Delivery", 2: "Delivered" };
+        return statusMap[params] || "Unknown";
+      },
+    },
+    {
+      field: "orderedAt",
+      headerName: "Ordered At",
+      width: 180,
+      valueGetter: (params) => new Date(params).toLocaleString(),
+    },
+    {
+      field: "products",
+      headerName: "Products",
+      width: 200,
+      renderCell: (params) => (
+        <Button
+          variant="contained"
+          color="primary"
+          size="small"
+          onClick={() => handleOpenModal(params.value)}
+        >
+          View More Details
+        </Button>
+      ),
+    },
+  ];
+
+  return (
+    <div style={{ height: 500, width: "100%" }}>
+      <DataGrid
+        rows={orders.map((order) => ({ ...order, id: order._id }))}
+        columns={columns}
+        pageSizeOptions={[5, 10, 20]}
+        checkboxSelection
+      />
+
+      {/* Modal for displaying product details */}
+      <Modal open={open} onClose={handleCloseModal}>
+  <Box
+    sx={{
+      position: "absolute",
+      top: "50%",
+      left: "50%",
+      transform: "translate(-50%, -50%)",
+      width: 400,
+      bgcolor: "white",
+      boxShadow: 24,
+      p: 3,
+      borderRadius: 2,
+    }}
+  >
+    <Typography variant="h6" gutterBottom>
+      Product Details
+    </Typography>
+    
+    {selectedProducts.length > 0 ? (
+      selectedProducts.map((item) => (
+        <Box key={item._id} sx={{ mb: 2 }}>
+          <Box sx={{ display: "flex", alignItems: "center" }}>
+            <img
+              src={item.product.images[0]}
+              alt={item.product.name}
+              width={50}
+              height={50}
+              style={{ marginRight: 8 }}
+            />
+            <Typography>
+              {item.product.name} (x{item.quantity})
+            </Typography>
+          </Box>
+          <Typography variant="body2" sx={{ color: "gray", mt: 1 }}>
+            Admin: {admins[item.product.adminId] || "Unknown"} {/* Display admin name */}
+          </Typography>
+        </Box>
+      ))
+    ) : (
+      <Typography>No products found</Typography>
+    )}
+
+    <Button variant="contained" color="secondary" onClick={handleCloseModal} fullWidth>
+      Close
+    </Button>
+  </Box>
+</Modal>
+
+    </div>
+  );
+};
+
+export default OrdersTable;

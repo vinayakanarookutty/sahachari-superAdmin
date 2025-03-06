@@ -27,7 +27,7 @@ function Delivery() {
 
   useEffect(() => {
     axios
-      .get("http://127.0.0.1:5000/api/get-delivery-details-super")
+      .get("https://d17p315up9p1ok.cloudfront.net/api/get-delivery-details-super")
       .then((response) => {
         const formattedDeliveries = response.data.map((delivery, index) => ({
           id: index + 1,

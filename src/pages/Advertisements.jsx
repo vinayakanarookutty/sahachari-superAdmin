@@ -20,14 +20,14 @@ function Advertisements() {
 
   useEffect(() => {
     // Fetch admin details
-    axios.get("http://127.0.0.1:5000/api/get-admin-details-super")
+    axios.get("https://d17p315up9p1ok.cloudfront.net/api/get-admin-details-super")
       .then((response) => {
         setAdmins(response.data);
       })
       .catch((error) => console.error("Error fetching admin details:", error));
     
     // Fetch advertisement details
-    axios.get("http://127.0.0.1:5000/api/get-advertisment-details-super")
+    axios.get("https://d17p315up9p1ok.cloudfront.net/api/get-advertisment-details-super")
       .then((response) => {
         const formattedAdv = response.data.map((Adv, index) => {
           const admin = admins.find(admin => admin._id === Adv.adminId);

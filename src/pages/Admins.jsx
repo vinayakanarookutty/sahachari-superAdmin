@@ -27,7 +27,7 @@ function Admins() {
 
   useEffect(() => {
     axios
-      .get("http://127.0.0.1:5000/api/get-admin-details-super")
+      .get("https://d17p315up9p1ok.cloudfront.net/api/get-admin-details-super")
       .then((response) => {
         const formattedUsers = response.data.map((admin, index) => {
           return {
