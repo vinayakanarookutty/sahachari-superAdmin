@@ -1,9 +1,32 @@
 import React, { useEffect, useState } from "react";
 import { DataGrid } from "@mui/x-data-grid";
-import { Box, Typography } from "@mui/material";
+import { Box, Typography, IconButton } from "@mui/material";
+import DeleteIcon from "@mui/icons-material/Delete";
 import axios from "axios";
 
-const columns = [
+const handleDelete = (objid, setOrders) => {
+  console.log(`Attempting to delete order with objid: ${objid}`);  // Log objid
+  axios.delete(`http://127.0.0.1:5000/api/delete-order/${objid}`)
+    .then((response) => {
+      setOrders((prevOrders) =>
+        prevOrders.filter((order) => order.objid !== objid)
+      );
+      console.log("Order deleted successfully:", response);
+    })
+    .catch((error) => {
+      console.error("Error deleting order:", error);
+    });
+};
+
+const DeleteButton = ({ objid, setOrders }) => {
+  return (
+    <IconButton color="error" onClick={() => handleDelete(objid, setOrders)}>
+      <DeleteIcon />
+    </IconButton>
+  );
+};
+
+const columns = (setOrders) => [
   { field: "id", headerName: "ID", width: 50 },
   {
     field: "item",
@@ -25,6 +48,12 @@ const columns = [
   { field: "status", headerName: "Status", width: 90 },
   { field: "total", headerName: "Total Amount", width: 100 },
   { field: "date", headerName: "Date", width: 180 },
+  {
+    field: "action",
+    headerName: "Action",
+    width: 100,
+    renderCell: (params) => <DeleteButton objid={params.row.objid} setOrders={setOrders} />,
+  },
 ];
 
 function Orders() {
@@ -43,15 +72,13 @@ function Orders() {
       .catch((error) => console.error("Error fetching admin details:", error));
 
       // Fetch user details
-  axios.get("http://127.0.0.1:5000/api/get-user-details-super")
-    .then((response) => {
-      setUsers(response.data)
-  })
-  .catch((error) => console.error("Error in fetching users: ",error)) 
+    axios.get("http://127.0.0.1:5000/api/get-user-details-super")
+      .then((response) => {
+        setUsers(response.data)
+    })
+    .catch((error) => console.error("Error in fetching users: ",error)) 
 
   }, []);
-
-   
 
   useEffect(() => {
     // Fetch orders only if admins are loaded
@@ -61,7 +88,7 @@ function Orders() {
           const formattedOrders = response.data.map((order, index) => {
             const product = order.products[0].product;
             const admin = admins.find(admin => admin._id === product.adminId);
-            const user = users.find(user => user._id === order.userId)
+            const user = users.find(user => user._id === order.userId);
             
             return {
               id: index + 1,
@@ -74,6 +101,7 @@ function Orders() {
               status: getOrderStatus(order.status),
               total: order.totalPrice,
               date: new Date(order.orderedAt).toLocaleString(),
+              objid: order._id,
             };
           });
           setOrders(formattedOrders);
@@ -102,7 +130,7 @@ function Orders() {
       <Typography variant="h5" gutterBottom>
         Orders
       </Typography>
-      <DataGrid rows={orders} columns={columns} pageSize={5} />
+      <DataGrid rows={orders} columns={columns(setOrders)} pageSize={5} />
     </Box>
   );
 }
