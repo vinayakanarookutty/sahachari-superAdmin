@@ -27,7 +27,7 @@ function Admins() {
 
   useEffect(() => {
     axios
-      .get("https://d17p315up9p1ok.cloudfront.net/api/get-admin-details-super")
+      .get(`${import.meta.env.VITE_API_URL}/api/get-admin-details-super`)
       .then((response) => {
         const formattedUsers = response.data.map((admin, index) => {
           return {

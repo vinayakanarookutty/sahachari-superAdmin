@@ -20,7 +20,7 @@ function Products() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    axios.get("https://d17p315up9p1ok.cloudfront.net/api/get-products-details-super") 
+    axios.get(`${import.meta.env.VITE_API_URL}/api/get-products-details-super`) 
       .then((response) => {
         const formattedProducts = response.data.map((product, index) => {
           return {

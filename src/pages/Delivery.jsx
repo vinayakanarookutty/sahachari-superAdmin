@@ -27,7 +27,7 @@ function Delivery() {
 
   useEffect(() => {
     axios
-      .get("https://d17p315up9p1ok.cloudfront.net/api/get-delivery-details-super")
+      .get(`${import.meta.env.VITE_API_URL}/api/get-delivery-details-super`)
       .then((response) => {
         const formattedDeliveries = response.data.map((delivery, index) => ({
           id: index + 1,

@@ -19,7 +19,7 @@ function Users() {
 
   useEffect(() => {
     axios
-      .get("https://d17p315up9p1ok.cloudfront.net/api/get-user-details-super")
+      .get(`${import.meta.env.VITE_API_URL}/api/get-user-details-super`)
       .then((response) => {
         const formattedUsers = response.data.map((user, index) => {
           return {

@@ -11,7 +11,7 @@ const OrdersTable = () => {
   const [admins, setAdmins] = useState({});
   useEffect(() => {
     axios
-      .get("https://d17p315up9p1ok.cloudfront.net/api/get-admin-details-super")
+      .get(`${import.meta.env.VITE_API_URL}/api/get-admin-details-super`)
       .then((response) => {
         // Convert admin list to a map { adminId: adminName }
         const adminMap = response.data.reduce((acc, admin) => {
