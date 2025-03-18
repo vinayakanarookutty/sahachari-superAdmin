@@ -38,11 +38,34 @@ const OrdersTable = () => {
         setOrders(response.data);
       })
       .catch((error) => console.error("Error fetching orders:", error));
-  }, []);
+  }, [orders]);
 
   const handleOpenModal = (products) => {
     setSelectedProducts(products);
     setOpen(true);
+  };
+
+
+  const handleDelete = (objid) => {
+    // Ask for confirmation before proceeding
+    const isConfirmed = window.confirm("Are you sure you want to delete this order?");
+    
+    if (isConfirmed) {
+      console.log(`Attempting to delete order with objid: ${objid}`);
+      
+      axios.delete(`https://d17p315up9p1ok.cloudfront.net/api/delete-order/${objid}`)
+        .then(() => {
+          setOrders((prevOrders) =>
+            prevOrders.filter((order) => order.objid !== objid)
+          );
+          alert("Order deleted successfully");
+        })
+        .catch((error) => {
+          console.error("Error deleting order:", error);
+        });
+    } else {
+      console.log("Order deletion cancelled");
+    }
   };
 
   const handleCloseModal = () => {
@@ -88,6 +111,21 @@ const OrdersTable = () => {
           onClick={() => handleOpenModal(params.value)}
         >
           View More Details
+        </Button>
+      ),
+    },
+    {
+      field: "delete",
+      headerName: "Delete",
+      width: 120,
+      renderCell: (params) => (
+        <Button
+          variant="contained"
+          color="error"
+          size="small"
+          onClick={() => handleDelete(params.row._id)}
+        >
+          Delete
         </Button>
       ),
     },
