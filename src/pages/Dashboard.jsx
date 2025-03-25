@@ -1,4 +1,4 @@
-import React from "react";
+
 import { Typography, Box, Grid, Paper, IconButton } from "@mui/material";
 import PeopleIcon from "@mui/icons-material/People";
 import AdminPanelSettingsIcon from "@mui/icons-material/AdminPanelSettings";
@@ -19,7 +19,8 @@ const sections = [
   { title: "Delivery", icon: <LocalShippingIcon fontSize="large" />, path: "/delivery" },
   { title: "Advertisement", icon: <CampaignIcon fontSize="large" />, path: "/advertisements" },
   { title: "View Services", icon: <VisibilityIcon fontSize="large" />, path: "/view_service" },
-  { title: "Add Services", icon: <AddBoxIcon fontSize="large" />, path: "/add_service" }
+  { title: "Add Services", icon: <AddBoxIcon fontSize="large" />, path: "/add_service" },
+  { title: "Booked Services", icon: <AddBoxIcon fontSize="large" />, path: "/booked_service" }
 ];
 
 

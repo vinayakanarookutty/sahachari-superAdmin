@@ -12,6 +12,7 @@ import Delivery from "./pages/Delivery";
 import Advertisements from "./pages/Advertisements";
 import AddService from "./pages/AddServices";
 import ViewServices from "./pages/ViewServices";
+import BookedServices from "./pages/BookedServices";
 
 const drawerWidth = 180; 
 
@@ -61,6 +62,7 @@ function App() {
             <Route path="/advertisements" element={<Advertisements />} />
             <Route path="/add_service" element={<AddService />} />
             <Route path="/view_service" element={<ViewServices />} />
+            <Route path="/booked_service" element={<BookedServices />} />
           </Routes>
         </Box>
       </Box>
